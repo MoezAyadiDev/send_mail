@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1089032125998",
+    "project_id": "flutter-send-mail",
+    "storage_bucket": "flutter-send-mail.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1089032125998:android:96ba4916eda7dc798da9bf",
+        "android_client_info": {
+          "package_name": "com.mait.send_mail"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1089032125998-fq3fsfve1gr6uajnlts088lelkanbgkv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBDTMONLIB5ZQKS8CSGEf_4ePOG2s_U1Rs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1089032125998-fq3fsfve1gr6uajnlts088lelkanbgkv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

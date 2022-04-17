@@ -1,13 +1,13 @@
-import 'package:injectable/injectable.dart';
-import 'package:send_mail/features/app/domain/entities/user.dart';
+// import 'package:injectable/injectable.dart';
+// import 'package:send_mail/features/auth/domain/entities/user.dart';
 
-@singleton
-class AuthService {
-  User? _user;
+// @singleton
+// class AuthService {
+//   User? _user;
 
-  void login(String email, String password) {
-    _user = User(email, password);
-  }
+//   void login(String email, String password) {
+//     _user = User(email, password);
+//   }
 
-  bool isLoggedIn() => _user != null;
-}
+//   bool isLoggedIn() => _user != null;
+// }

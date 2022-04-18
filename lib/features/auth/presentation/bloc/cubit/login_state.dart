@@ -1,22 +1,20 @@
 part of 'login_cubit.dart';
 
-enum Validation { none, loading, succes, fail }
-
 @immutable
 class LoginState extends Equatable {
-  final String email;
-  final String password;
-  final Validation status;
+  final Email email;
+  final Password password;
+  final FormzStatus status;
   const LoginState({
-    this.email = '',
-    this.password = '',
-    this.status = Validation.none,
+    this.email = const Email.pure(),
+    this.password = const Password.pure(),
+    this.status = FormzStatus.pure,
   });
 
   LoginState copyWith({
-    String? email,
-    String? password,
-    Validation? status,
+    Email? email,
+    Password? password,
+    FormzStatus? status,
   }) {
     return LoginState(
       email: email ?? this.email,

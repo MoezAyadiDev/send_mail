@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 class DefaultFirebaseOption {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
+      return web;
       throw UnsupportedError(
         'DefaultFirebaseOptions have not been configured for web - '
         'you can reconfigure this by running the FlutterFire CLI again.',
@@ -28,6 +29,13 @@ class DefaultFirebaseOption {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
+    apiKey: 'AIzaSyBDTMONLIB5ZQKS8CSGEf_4ePOG2s_U1Rs',
+    appId: '1:1089032125998:android:96ba4916eda7dc798da9bf',
+    messagingSenderId: '1089032125998',
+    projectId: 'flutter-send-mail',
+    storageBucket: 'flutter-send-mail.appspot.com',
+  );
+  static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyBDTMONLIB5ZQKS8CSGEf_4ePOG2s_U1Rs',
     appId: '1:1089032125998:android:96ba4916eda7dc798da9bf',
     messagingSenderId: '1089032125998',

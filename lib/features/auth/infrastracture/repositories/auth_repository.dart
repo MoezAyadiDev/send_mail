@@ -1,17 +1,15 @@
 import 'dart:async';
 
+import 'package:flutter/widgets.dart';
 import 'package:injectable/injectable.dart';
 import 'package:send_mail/features/auth/domain/entities/user.dart';
 import 'package:send_mail/features/auth/domain/interfaces/auth_interface.dart';
+import 'package:send_mail/features/auth/infrastracture/data_sources/firebase_datasource.dart';
 
 @Singleton(as: AuthInterface)
 class AuthRepository implements AuthInterface {
-  AuthRepository(
-      //{
-      // this.isAuthenticated = false,
-      //}
-      );
-
+  AuthRepository(this.dataSource);
+  final FirebaseDataSource dataSource;
   bool isAuthenticated = false;
   User? _user;
 
@@ -46,10 +44,18 @@ class AuthRepository implements AuthInterface {
   Future<bool> signInWithEmailAndPassword({
     required String email,
     required String password,
-  }) {
-    _controller.add(_fakeUser);
-    isAuthenticated = true;
-    return Future.value(true);
+  }) async {
+    debugPrint('signInWithEmailAndPassword');
+    var _isLoggedIn =
+        await dataSource.signInWithEmailAndPassword(email, password);
+    if (_isLoggedIn) {
+      _controller.add(_fakeUser);
+      isAuthenticated = true;
+
+      return true;
+    } else {
+      return false;
+    }
   }
 
   @override

@@ -2,7 +2,6 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:formz/formz.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:send_mail/commen/util/validation/email_validator.dart';
 import 'package:send_mail/commen/util/validation/password_validator.dart';
@@ -36,18 +35,29 @@ class LoginCubit extends Cubit<LoginState> {
 
   Future<void> validate() async {
     if (state.status.isValidated) {
-      emit(state.copyWith(status: FormzStatus.submissionInProgress));
-      try {
-        var _result = await _service.signInWithEmailAndPassword(
-            state.email.value, state.password.value);
-        if (_result) {
-          emit(state.copyWith(status: FormzStatus.submissionSuccess));
-        } else {
-          emit(state.copyWith(status: FormzStatus.submissionFailure));
-        }
-      } catch (_) {
-        emit(state.copyWith(status: FormzStatus.submissionFailure));
-      }
+      emit(state.copyWith(
+        status: FormzStatus.submissionInProgress,
+        message: '',
+      ));
+      var _result = await _service.signInWithEmailAndPassword(
+        state.email.value,
+        state.password.value,
+      );
+      _result.fold((l) {
+        emit(state.copyWith(
+          status: FormzStatus.submissionFailure,
+          message: l.message,
+        ));
+      }, (r) {
+        emit(state.copyWith(
+          status: FormzStatus.submissionSuccess,
+          message: '',
+        ));
+      });
+    } else {
+      emit(
+        state.copyWith(checkField: true),
+      );
     }
   }
 }

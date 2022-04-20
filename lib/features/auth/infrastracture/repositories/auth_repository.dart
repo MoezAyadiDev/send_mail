@@ -1,8 +1,11 @@
 import 'dart:async';
 
+import 'package:dartz/dartz.dart';
 import 'package:flutter/widgets.dart';
 import 'package:injectable/injectable.dart';
-import 'package:send_mail/features/auth/domain/entities/user.dart';
+import 'package:send_mail/commen/util/exception/auth_failures.dart';
+import 'package:send_mail/commen/util/exception/failures.dart';
+import 'package:send_mail/features/auth/domain/entities/utilisateur.dart';
 import 'package:send_mail/features/auth/domain/interfaces/auth_interface.dart';
 import 'package:send_mail/features/auth/infrastracture/data_sources/firebase_datasource.dart';
 
@@ -11,15 +14,15 @@ class AuthRepository implements AuthInterface {
   AuthRepository(this.dataSource);
   final FirebaseDataSource dataSource;
   bool isAuthenticated = false;
-  User? _user;
+  Utilisateur? _user;
 
-  final _controller = StreamController<User?>.broadcast();
-
-  @override
-  User? get currentUser => isAuthenticated ? _user : null;
+  final _controller = StreamController<Utilisateur?>.broadcast();
 
   @override
-  Stream<User?> get user {
+  Utilisateur? get currentUser => isAuthenticated ? _user : null;
+
+  @override
+  Stream<Utilisateur?> get user {
     return _controller.stream.asBroadcastStream(
       onListen: (_) {
         _controller.add(isAuthenticated ? _user : null);
@@ -41,21 +44,25 @@ class AuthRepository implements AuthInterface {
   }
 
   @override
-  Future<bool> signInWithEmailAndPassword({
+  Future<Either<AuthentificationFailure, bool>> signInWithEmailAndPassword({
     required String email,
     required String password,
   }) async {
-    debugPrint('signInWithEmailAndPassword');
-    var _isLoggedIn =
-        await dataSource.signInWithEmailAndPassword(email, password);
-    if (_isLoggedIn) {
-      _controller.add(_fakeUser);
-      isAuthenticated = true;
+    var _isLoggedIn = await dataSource.signInWithEmailAndPassword(
+      email,
+      password,
+    );
+    return _isLoggedIn.fold(
+      (l) {
+        return Left(l);
+      },
+      (r) {
+        _controller.add(r);
+        isAuthenticated = true;
 
-      return true;
-    } else {
-      return false;
-    }
+        return const Right(true);
+      },
+    );
   }
 
   @override
@@ -70,5 +77,3 @@ class AuthRepository implements AuthInterface {
     throw UnimplementedError();
   }
 }
-
-User get _fakeUser => User('moez.ayadi@gmail.com', 'AZERTY');

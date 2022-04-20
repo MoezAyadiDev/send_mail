@@ -18,6 +18,7 @@ dependencies:
   go_router: ^3.0.7
   equatable: ^2.0.3
   formz: ^0.4.1
+  dartz: ^0.10.1
   
 dev_dependencies:
   injectable_generator: ^1.5.3

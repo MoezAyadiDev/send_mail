@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
-import 'package:send_mail/features/auth/domain/entities/user.dart';
+import 'package:send_mail/features/auth/domain/entities/utilisateur.dart';
 import 'package:send_mail/features/auth/domain/interfaces/auth_interface.dart';
 
 part 'session_state.dart';
@@ -11,7 +11,7 @@ part 'session_state.dart';
 @Singleton()
 class SessionCubit extends Cubit<SessionState> {
   final AuthInterface _authenticationGateway;
-  late final StreamSubscription<User?> _userSubscription;
+  late final StreamSubscription<Utilisateur?> _userSubscription;
 
   SessionCubit(AuthInterface authenticationGateway)
       : _authenticationGateway = authenticationGateway,
@@ -24,7 +24,7 @@ class SessionCubit extends Cubit<SessionState> {
       (user) => onAppUserChanged(user),
     );
   }
-  onAppUserChanged(User? user) {
+  onAppUserChanged(Utilisateur? user) {
     emit(
       user != null
           ? SessionState.authenticated(user)

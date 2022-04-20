@@ -10,15 +10,18 @@ class EmailWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<LoginCubit, LoginState>(
       buildWhen: (previous, current) =>
-          previous.email != current.email || previous.status != current.status,
+          previous.email != current.email ||
+          previous.checkField != current.checkField,
       builder: (context, state) {
         return TextFormField(
           decoration: InputDecoration(
             icon: const Icon(Icons.person),
             hintText: 'Your mail adress',
             labelText: 'Email',
-            errorText: (state.email.invalid && !state.status.isValid)
-                ? 'invalid username'
+            errorText: (!state.email.valid && state.checkField)
+                ? state.email.value == ''
+                    ? 'Email can\'t be empty'
+                    : 'invalid username'
                 : null,
           ),
           onChanged: (value) {

@@ -1,10 +1,13 @@
+import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
-import 'package:send_mail/features/auth/domain/entities/user.dart';
+import 'package:send_mail/commen/util/exception/auth_failures.dart';
+import 'package:send_mail/commen/util/exception/failures.dart';
+import 'package:send_mail/features/auth/domain/entities/utilisateur.dart';
 
 //@Singleton()
 abstract class AuthInterface {
-  Stream<User?> get user;
-  User? get currentUser;
+  Stream<Utilisateur?> get user;
+  Utilisateur? get currentUser;
 
   Future<bool> signUp({
     required String email,
@@ -17,7 +20,7 @@ abstract class AuthInterface {
     throw UnimplementedError();
   }
 
-  Future<bool> signInWithEmailAndPassword({
+  Future<Either<AuthentificationFailure, bool>> signInWithEmailAndPassword({
     required String email,
     required String password,
   }) async {

@@ -12,14 +12,14 @@ class SessionState extends Equatable {
     this.user,
   });
 
-  const SessionState.authenticated(User user)
+  const SessionState.authenticated(Utilisateur user)
       : this._(status: AppStatus.authenticated, user: user);
 
   const SessionState.unauthenticated()
       : this._(status: AppStatus.unauthenticated);
 
   final AppStatus status;
-  final User? user;
+  final Utilisateur? user;
 
   bool get isAuthenticated => status == AppStatus.authenticated;
 

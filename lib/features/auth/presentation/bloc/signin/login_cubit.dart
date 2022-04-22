@@ -19,44 +19,69 @@ class LoginCubit extends Cubit<LoginState> {
 
   emailChanged(String email) {
     final _email = Email.dirty(email);
-    emit(state.copyWith(
-      email: _email,
-      status: Formz.validate([state.password, _email]),
-    ));
+    emit(
+      state.copyWith(
+        email: _email,
+        status: Formz.validate([state.password, _email]),
+      ),
+    );
   }
 
   passwordChanged(String password) {
     final _password = Password.dirty(password);
-    emit(state.copyWith(
-      password: _password,
-      status: Formz.validate([_password, state.email]),
-    ));
+    emit(
+      state.copyWith(
+        password: _password,
+        status: Formz.validate([_password, state.email]),
+      ),
+    );
+  }
+
+  visibilityChanged() {
+    emit(
+      state.copyWith(
+        showPassword: !state.showPassword,
+      ),
+    );
   }
 
   Future<void> validate() async {
     if (state.status.isValidated) {
-      emit(state.copyWith(
-        status: FormzStatus.submissionInProgress,
-        message: '',
-      ));
+      emit(
+        state.copyWith(
+          status: FormzStatus.submissionInProgress,
+          message: '',
+        ),
+      );
       var _result = await _service.signInWithEmailAndPassword(
         state.email.value,
         state.password.value,
       );
-      _result.fold((l) {
-        emit(state.copyWith(
-          status: FormzStatus.submissionFailure,
-          message: l.message,
-        ));
-      }, (r) {
-        emit(state.copyWith(
-          status: FormzStatus.submissionSuccess,
-          message: '',
-        ));
-      });
+      _result.fold(
+        (l) {
+          emit(
+            state.copyWith(
+              status: FormzStatus.submissionFailure,
+              message: l.message,
+            ),
+          );
+        },
+        (r) {
+          emit(
+            state.copyWith(
+              status: FormzStatus.submissionSuccess,
+              message: '',
+            ),
+          );
+        },
+      );
     } else {
       emit(
-        state.copyWith(checkField: true),
+        state.copyWith(
+          checkField: true,
+          status: FormzStatus.submissionFailure,
+          message: 'Check the input',
+        ),
       );
     }
   }

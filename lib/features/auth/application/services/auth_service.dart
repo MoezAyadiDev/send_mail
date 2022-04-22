@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 import 'package:send_mail/commen/util/exception/auth_failures.dart';
-import 'package:send_mail/commen/util/exception/failures.dart';
+import 'package:send_mail/commen/util/exception/signup_failures.dart';
 import 'package:send_mail/features/auth/domain/interfaces/auth_interface.dart';
 
 @Singleton()
@@ -17,10 +17,12 @@ class AuthService {
     );
   }
 
-  Future<bool> signUp(String email, String password) async {
+  Future<Either<SignUpFailure, bool>> signUp(
+      String email, String password, String name) async {
     return _authService.signUp(
       email: email,
       password: password,
+      name: name,
     );
   }
 

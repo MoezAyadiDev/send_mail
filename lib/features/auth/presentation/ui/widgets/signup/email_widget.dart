@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:send_mail/features/auth/presentation/bloc/signin/login_cubit.dart';
+import 'package:send_mail/features/auth/presentation/bloc/signup/signup_cubit.dart';
 
-class EmailWidget extends StatelessWidget {
-  const EmailWidget({Key? key}) : super(key: key);
+class MailWidget extends StatelessWidget {
+  const MailWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LoginCubit, LoginState>(
+    return BlocBuilder<SignupCubit, SignupState>(
       buildWhen: (previous, current) =>
           previous.email != current.email ||
           previous.checkField != current.checkField,
@@ -24,7 +24,7 @@ class EmailWidget extends StatelessWidget {
                 : null,
           ),
           onChanged: (value) {
-            BlocProvider.of<LoginCubit>(context).emailChanged(value);
+            BlocProvider.of<SignupCubit>(context).emailChanged(value);
           },
         );
       },

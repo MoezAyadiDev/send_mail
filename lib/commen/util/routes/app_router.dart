@@ -8,25 +8,29 @@ import 'package:send_mail/features/auth/presentation/ui/signup_page.dart';
 import 'package:send_mail/features/home/presentation/ui/home_page.dart';
 
 GoRouter appRourter(BuildContext context, String? initialLocation) => GoRouter(
-      initialLocation: initialLocation ?? Routes.splash,
+      initialLocation: initialLocation ?? Routes.splashPath,
       debugLogDiagnostics: true,
+      urlPathStrategy: UrlPathStrategy.path,
       refreshListenable:
           GoRouterRefreshStream(context.read<SessionCubit>().stream),
       routes: [
         GoRoute(
-          path: Routes.login,
+          name: Routes.loginName,
+          path: Routes.loginPath,
           builder: (context, state) {
             return const LoginPage();
           },
           routes: [
             GoRoute(
-              path: Routes.signup,
+              path: Routes.signupPath,
+              name: Routes.signupName,
               builder: (context, state) {
                 return const SignUpPage();
               },
             ),
             GoRoute(
-              path: Routes.mailVerification,
+              path: Routes.mailVerificationPath,
+              name: Routes.mailVerificationName,
               builder: (context, state) {
                 return const MailVerificationPage();
               },
@@ -34,7 +38,8 @@ GoRouter appRourter(BuildContext context, String? initialLocation) => GoRouter(
           ],
         ),
         GoRoute(
-          path: Routes.home,
+          name: Routes.homeName,
+          path: Routes.homePath,
           builder: (context, state) {
             return const HomePage();
           },
@@ -42,18 +47,17 @@ GoRouter appRourter(BuildContext context, String? initialLocation) => GoRouter(
       ],
       redirect: (state) {
         final loggedIn = context.read<SessionCubit>().state.isAuthenticated;
-        final loggingIn = state.subloc == Routes.login;
-        final signingUp = state.subloc == Routes.signup;
-
-        if (signingUp) {
+        final loggingIn = state.subloc == Routes.loginPath;
+        final signingUp = state.subloc == '/login/' + Routes.signupPath;
+        if (signingUp && !loggedIn) {
           return null;
         }
 
         if (!loggedIn) {
-          return loggingIn ? null : Routes.login;
+          return loggingIn ? null : Routes.loginPath;
         }
-        if (loggingIn) {
-          return Routes.home;
+        if (loggingIn || (signingUp && loggedIn)) {
+          return Routes.homePath;
         }
 
         return null;
@@ -61,9 +65,15 @@ GoRouter appRourter(BuildContext context, String? initialLocation) => GoRouter(
     );
 
 class Routes {
-  static const signup = 'login/signup';
-  static const mailVerification = 'login/mailVerification';
-  static const login = '/login';
-  static const home = '/home';
-  static const splash = '/';
+  static const loginPath = '/login';
+  static const homePath = '/home';
+  static const splashPath = '/';
+  static const signupPath = 'signup';
+  static const mailVerificationPath = 'mailVerification';
+
+  static const loginName = 'login';
+  static const homeName = 'home';
+  static const splashName = 'splash';
+  static const signupName = 'signup';
+  static const mailVerificationName = 'mailVerification';
 }

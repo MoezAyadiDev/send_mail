@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
-import 'package:send_mail/features/auth/presentation/bloc/cubit/login_cubit.dart';
+import 'package:go_router/go_router.dart';
+import 'package:rounded_loading_button/rounded_loading_button.dart';
+import 'package:send_mail/commen/util/routes/app_router.dart';
+import 'package:send_mail/features/auth/presentation/bloc/signin/login_cubit.dart';
 import 'package:send_mail/features/auth/presentation/ui/widgets/login/email_widget.dart';
 import 'package:send_mail/features/auth/presentation/ui/widgets/login/password_widget.dart';
 
@@ -10,6 +13,20 @@ class LoginWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final RoundedLoadingButtonController _btnController =
+        RoundedLoadingButtonController();
+    Future<void> _submissionFail() async {
+      _btnController.error();
+      await Future.delayed(const Duration(milliseconds: 600));
+      _btnController.reset();
+    }
+
+    Future<void> _submissionSucces() async {
+      _btnController.success();
+      await Future.delayed(const Duration(milliseconds: 600));
+      _btnController.reset();
+    }
+
     return Center(
       child: SizedBox(
         width: 400,
@@ -20,12 +37,15 @@ class LoginWidget extends StatelessWidget {
                   previous.status != current.status,
               listener: (context, state) {
                 if (state.status == FormzStatus.submissionFailure) {
+                  _submissionFail();
                   ScaffoldMessenger.of(context).removeCurrentSnackBar();
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(state.message),
                     ),
                   );
+                } else if (state.status == FormzStatus.submissionSuccess) {
+                  _submissionSucces();
                 }
               },
               child: Column(
@@ -36,12 +56,22 @@ class LoginWidget extends StatelessWidget {
                   const SizedBox(height: 10),
                   const PasswordWidget(),
                   const SizedBox(height: 20),
-                  ElevatedButton(
+                  RoundedLoadingButton(
+                    child: const Text(
+                      'Validate',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    controller: _btnController,
+                    onPressed: () =>
+                        BlocProvider.of<LoginCubit>(context).validate(),
+                  ),
+                  const SizedBox(height: 20.0),
+                  TextButton(
                     onPressed: () {
-                      BlocProvider.of<LoginCubit>(context).validate();
+                      context.goNamed(Routes.signupName);
                     },
-                    child: const Text('Validate'),
-                  )
+                    child: const Text('Sign up'),
+                  ),
                 ],
               ),
             )

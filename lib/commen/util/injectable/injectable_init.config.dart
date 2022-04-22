@@ -15,8 +15,10 @@ import '../../../features/auth/infrastracture/data_sources/firebase_datasource.d
     as _i3;
 import '../../../features/auth/infrastracture/repositories/auth_repository.dart'
     as _i5;
-import '../../../features/auth/presentation/bloc/cubit/login_cubit.dart'
-    as _i7; // ignore_for_file: unnecessary_lambdas
+import '../../../features/auth/presentation/bloc/signin/login_cubit.dart'
+    as _i7;
+import '../../../features/auth/presentation/bloc/signup/signup_cubit.dart'
+    as _i9; // ignore_for_file: unnecessary_lambdas
 
 // ignore_for_file: lines_longer_than_80_chars
 /// initializes the registration of provided dependencies inside of [GetIt]
@@ -29,5 +31,6 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
   gh.singleton<_i6.AuthService>(_i6.AuthService(get<_i4.AuthInterface>()));
   gh.factory<_i7.LoginCubit>(() => _i7.LoginCubit(get<_i6.AuthService>()));
   gh.singleton<_i8.SessionCubit>(_i8.SessionCubit(get<_i4.AuthInterface>()));
+  gh.factory<_i9.SignupCubit>(() => _i9.SignupCubit(get<_i6.AuthService>()));
   return get;
 }

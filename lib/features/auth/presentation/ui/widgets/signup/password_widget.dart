@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:send_mail/features/auth/presentation/bloc/signin/login_cubit.dart';
+import 'package:send_mail/features/auth/presentation/bloc/signup/signup_cubit.dart';
 
-class PasswordWidget extends StatelessWidget {
-  const PasswordWidget({Key? key}) : super(key: key);
+class PassWidget extends StatelessWidget {
+  const PassWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LoginCubit, LoginState>(
+    return BlocBuilder<SignupCubit, SignupState>(
       buildWhen: (previous, current) =>
           previous.checkField != current.checkField ||
           previous.password != current.password ||
@@ -25,7 +25,7 @@ class PasswordWidget extends StatelessWidget {
                     : Icons.visibility_rounded,
               ),
               onPressed: () {
-                BlocProvider.of<LoginCubit>(context).visibilityChanged();
+                BlocProvider.of<SignupCubit>(context).visibilityChanged();
               },
             ),
             errorText: (!state.password.valid && state.checkField)
@@ -36,7 +36,7 @@ class PasswordWidget extends StatelessWidget {
           ),
           obscureText: state.showPassword ? false : true,
           onChanged: (value) {
-            BlocProvider.of<LoginCubit>(context).passwordChanged(value);
+            BlocProvider.of<SignupCubit>(context).passwordChanged(value);
           },
         );
       },

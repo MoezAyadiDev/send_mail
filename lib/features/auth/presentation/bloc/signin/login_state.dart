@@ -7,12 +7,14 @@ class LoginState extends Equatable {
   final FormzStatus status;
   final bool checkField;
   final String message;
+  final bool showPassword;
   const LoginState({
     this.email = const Email.pure(),
     this.password = const Password.pure(),
     this.status = FormzStatus.pure,
     this.checkField = false,
     this.message = '',
+    this.showPassword = false,
   });
 
   LoginState copyWith({
@@ -21,6 +23,7 @@ class LoginState extends Equatable {
     FormzStatus? status,
     bool? checkField,
     String? message,
+    bool? showPassword,
   }) {
     return LoginState(
       email: email ?? this.email,
@@ -28,6 +31,7 @@ class LoginState extends Equatable {
       status: status ?? this.status,
       checkField: checkField ?? this.checkField,
       message: message ?? this.message,
+      showPassword: showPassword ?? this.showPassword,
     );
   }
 
@@ -38,5 +42,6 @@ class LoginState extends Equatable {
         status,
         checkField,
         message,
+        showPassword,
       ];
 }

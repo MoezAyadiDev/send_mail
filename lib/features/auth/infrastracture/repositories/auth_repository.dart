@@ -4,7 +4,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/widgets.dart';
 import 'package:injectable/injectable.dart';
 import 'package:send_mail/commen/util/exception/auth_failures.dart';
-import 'package:send_mail/commen/util/exception/failures.dart';
+import 'package:send_mail/commen/util/exception/signup_failures.dart';
 import 'package:send_mail/features/auth/domain/entities/utilisateur.dart';
 import 'package:send_mail/features/auth/domain/interfaces/auth_interface.dart';
 import 'package:send_mail/features/auth/infrastracture/data_sources/firebase_datasource.dart';
@@ -72,8 +72,26 @@ class AuthRepository implements AuthInterface {
   }
 
   @override
-  Future<bool> signUp({required String email, required String password}) {
-    // TODO: implement signUp
-    throw UnimplementedError();
+  Future<Either<SignUpFailure, bool>> signUp(
+      {required String email,
+      required String password,
+      required String name}) async {
+    var _isLoggedIn = await dataSource.signUp(
+      email,
+      password,
+      name,
+    );
+    return _isLoggedIn.fold(
+      (l) {
+        return Left(l);
+      },
+      (r) {
+        debugPrint(r.toString());
+        _controller.add(r);
+        isAuthenticated = true;
+
+        return const Right(true);
+      },
+    );
   }
 }
